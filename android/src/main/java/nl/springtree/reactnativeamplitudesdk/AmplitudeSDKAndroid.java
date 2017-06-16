@@ -22,89 +22,89 @@ import java.util.Map;
 
 public class AmplitudeSDKAndroid extends ReactContextBaseJavaModule {
 
-  private Activity mActivity = null;
-  private Application mApplication = null;
+	private Activity mActivity = null;
+	private Application mApplication = null;
 
-  public AmplitudeSDKAndroid(ReactApplicationContext reactContext, Application mApplication) {
-    super(reactContext);
-    this.mActivity = getCurrentActivity();
-    this.mApplication = mApplication;
-  }
+	public AmplitudeSDKAndroid(ReactApplicationContext reactContext, Application mApplication) {
+		super(reactContext);
+		this.mActivity = getCurrentActivity();
+		this.mApplication = mApplication;
+	}
 
-  @Override
-  public String getName() {
-    return "AmplitudeSDKAndroid";
-  }
-
-  @ReactMethod
-  public void initialize(String apiKey) {
-	Amplitude.getInstance().trackSessionEvents(true);
-    Amplitude.getInstance().initialize(getCurrentActivity(), apiKey).enableForegroundTracking(this.mApplication);
-  }
-
-  @ReactMethod
-  public void setUserId(String id) {
-    Amplitude.getInstance().setUserId(id);
-  }
+	@Override
+	public String getName() {
+		return "AmplitudeSDKAndroid";
+	}
 
 	@ReactMethod
-  public void setUserProperties(ReadableMap properties) {
-    try {
-      JSONObject jProperties = convertReadableToJsonObject(properties);
-      Amplitude.getInstance().setUserProperties(jProperties);
-    } catch (JSONException e) {
-      return;
-    }
-  }
+	public void initialize(String apiKey) {
+		Amplitude.getInstance().trackSessionEvents(true);
+		Amplitude.getInstance().initialize(getCurrentActivity(), apiKey).enableForegroundTracking(this.mApplication);
+	}
 
-  @ReactMethod
-  public void logEvent(String identifier) {
-    Amplitude.getInstance().logEvent(identifier);
-  }
+	@ReactMethod
+	public void setUserId(String id) {
+		Amplitude.getInstance().setUserId(id);
+	}
 
-  @ReactMethod
-  public void logEventWithProps(String identifier, ReadableMap properties) {
+	@ReactMethod
+	public void setUserProperties(ReadableMap properties) {
+		try {
+			JSONObject jProperties = convertReadableToJsonObject(properties);
+			Amplitude.getInstance().setUserProperties(jProperties);
+		} catch (JSONException e) {
+			return;
+		}
+	}
 
-    try {
-      JSONObject jProperties = convertReadableToJsonObject(properties);
-      Amplitude.getInstance().logEvent(identifier, jProperties);
-    } catch (JSONException e) {
-      return;
-    }
+	@ReactMethod
+	public void logEvent(String identifier) {
+		Amplitude.getInstance().logEvent(identifier);
+	}
 
-  }
+	@ReactMethod
+	public void logEventWithProps(String identifier, ReadableMap properties) {
 
-  @ReactMethod
-  public void logRevenue(String productIdentifier, int quantity, double amount) {
-    Amplitude.getInstance().logRevenue(productIdentifier, quantity, amount);
-  }
+		try {
+			JSONObject jProperties = convertReadableToJsonObject(properties);
+			Amplitude.getInstance().logEvent(identifier, jProperties);
+		} catch (JSONException e) {
+			return;
+		}
 
-  public static JSONObject convertReadableToJsonObject(ReadableMap map) throws JSONException{
-    JSONObject jsonObj = new JSONObject();
-    ReadableMapKeySetIterator it = map.keySetIterator();
+	}
 
-    while (it.hasNextKey()) {
-      String key = it.nextKey();
-      ReadableType type = map.getType(key);
-      switch (type) {
-        case Map:
-            jsonObj.put(key, convertReadableToJsonObject(map.getMap(key)));
-            break;
-        case String:
-            jsonObj.put(key, map.getString(key));
-            break;
-        case Number:
-            jsonObj.put(key, map.getDouble(key));
-            break;
-        case Boolean:
-            jsonObj.put(key, map.getBoolean(key));
-            break;
-        case Null:
-            jsonObj.put(key, null);
-            break;
-      }
-    }
-    return jsonObj;
- }
+	@ReactMethod
+	public void logRevenue(String productIdentifier, int quantity, double amount) {
+		Amplitude.getInstance().logRevenue(productIdentifier, quantity, amount);
+	}
+
+	public static JSONObject convertReadableToJsonObject(ReadableMap map) throws JSONException{
+		JSONObject jsonObj = new JSONObject();
+		ReadableMapKeySetIterator it = map.keySetIterator();
+
+		while (it.hasNextKey()) {
+			String key = it.nextKey();
+			ReadableType type = map.getType(key);
+			switch (type) {
+				case Map:
+					jsonObj.put(key, convertReadableToJsonObject(map.getMap(key)));
+					break;
+				case String:
+					jsonObj.put(key, map.getString(key));
+					break;
+				case Number:
+					jsonObj.put(key, map.getDouble(key));
+					break;
+				case Boolean:
+					jsonObj.put(key, map.getBoolean(key));
+					break;
+				case Null:
+					jsonObj.put(key, null);
+					break;
+			}
+		}
+		return jsonObj;
+	}
 
 }
