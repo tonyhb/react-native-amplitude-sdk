@@ -48,6 +48,11 @@ public class AmplitudeSDKAndroid extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
+	public void setDeviceId(String id) {
+		Amplitude.getInstance().setDeviceId(id);
+	}
+
+	@ReactMethod
 	public void setUserProperties(ReadableMap properties) {
 		try {
 			JSONObject jProperties = convertReadableToJsonObject(properties);

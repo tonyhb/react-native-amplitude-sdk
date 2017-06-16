@@ -17,6 +17,11 @@ RCT_EXPORT_METHOD(setUserId:(NSString *)userId)
   [[Amplitude instance] setUserId:userId];
 }
 
+RCT_EXPORT_METHOD(setDeviceId:(NSString *)deviceId)
+{
+  [[Amplitude instance] setDeviceId:deviceId];
+}
+
 RCT_EXPORT_METHOD(setUserProperties:(NSDictionary *)properties)
 {
   [[Amplitude instance] setUserProperties:properties];
